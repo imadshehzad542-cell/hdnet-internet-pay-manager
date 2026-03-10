@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HDNetWORK-Pay — Recovery System</title>
+<link rel="stylesheet" href="index.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div class="bg-fx">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+  <div class="orb orb4"></div>
+</div>
+
+<div class="wrap">
+
+  
+  <header>
+    <div class="brand">
+      <div class="brand-mark">🌐</div>
+      <div>
+        <div class="brand-name">hdNetwork<span>Pay</span></div>
+        <div class="brand-sub">Internet Recovery &amp; Payment System</div>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <div class="hdr-date" id="hdrDate">—</div>
+      <div class="hdr-time" id="hdrTime">—</div>
+    </div>
+  </header>
+
+  
+  <div class="stats">
+    <div class="stat-card sc-cyan">
+      <div class="stat-glow"></div>
+      <div class="stat-icon">👥</div>
+      <div class="stat-label">Total Customers</div>
+      <div class="stat-value" id="stCust">0</div>
+      <div class="stat-meta">Registered users</div>
+    </div>
+    <div class="stat-card sc-green">
+      <div class="stat-glow"></div>
+      <div class="stat-icon">💵</div>
+      <div class="stat-label">Total Collected</div>
+      <div class="stat-value" id="stCollected">Rs 0</div>
+      <div class="stat-meta">All paid payments</div>
+    </div>
+    <div class="stat-card sc-red">
+      <div class="stat-glow"></div>
+      <div class="stat-icon">⏳</div>
+      <div class="stat-label">Pending Amount</div>
+      <div class="stat-value" id="stPending">Rs 0</div>
+      <div class="stat-meta">Awaiting payment</div>
+    </div>
+    <div class="stat-card sc-purple">
+      <div class="stat-glow"></div>
+      <div class="stat-icon">📅</div>
+      <div class="stat-label">This Month</div>
+      <div class="stat-value" id="stMonth">Rs 0</div>
+      <div class="stat-meta">Current month paid</div>
+    </div>
+  </div>
+
+  
+  <div class="section-label">Management</div>
+  <div class="grid2">
+
+    
+    <div class="panel">
+      <div class="panel-title"><span class="ptag">👤</span> Add New Customer</div>
+      <div class="fg">
+        <label>Full Name *</label>
+        <input type="text" id="custName" placeholder="e.g. Ahmed Khan">
+      </div>
+      <div class="fg">
+        <label>Phone Number</label>
+        <input type="text" id="custPhone" placeholder="e.g. 0300-1234567">
+      </div>
+      <div class="fg">
+        <label>Area / Address</label>
+        <input type="text" id="custArea" placeholder="e.g. Block B, Gulshan">
+      </div>
+      <div class="row2">
+        <div class="fg">
+          <label>Package Rs/month</label>
+          <input type="number" id="custPackage" placeholder="1500">
+        </div>
+        <div class="fg">
+          <label>Join Date</label>
+          <input type="date" id="custDate">
+        </div>
+      </div>
+      <button class="btn btn-cyan" onclick="addCustomer()">＋ Add Customer</button>
+    </div>
+
+    
+    <div class="panel">
+      <div class="panel-title"><span class="ptag">💰</span> Record Payment</div>
+      <div class="fg">
+        <label>Select Customer *</label>
+        <select id="payCustomer"><option value="">— Choose Customer —</option></select>
+      </div>
+      <div class="row2">
+        <div class="fg">
+          <label>Amount (Rs) *</label>
+          <input type="number" id="payAmount" placeholder="1500">
+        </div>
+        <div class="fg">
+          <label>Payment Date *</label>
+          <input type="date" id="payDate">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="fg">
+          <label>Month</label>
+          <select id="payMonth">
+            <option value="1">January</option><option value="2">February</option>
+            <option value="3">March</option><option value="4">April</option>
+            <option value="5">May</option><option value="6">June</option>
+            <option value="7">July</option><option value="8">August</option>
+            <option value="9">September</option><option value="10">October</option>
+            <option value="11">November</option><option value="12">December</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Status</label>
+          <select id="payStatus">
+            <option value="paid">✅ Paid</option>
+            <option value="pending">⏳ Pending</option>
+            <option value="overdue">❌ Overdue</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Note (optional)</label>
+        <input type="text" id="payNote" placeholder="e.g. Cash, advance, partial...">
+      </div>
+      <button class="btn btn-green" onclick="addPayment()">✓ Record Payment</button>
+    </div>
+  </div>
+
+  
+  <div class="section-label">Analytics</div>
+  <div class="chart-panel">
+    <div class="chart-hdr">
+      <div class="chart-title">📊 <span>Yearly Payment Overview</span></div>
+      <div class="yr-pills" id="yrPills"></div>
+    </div>
+    <canvas id="payChart" height="75"></canvas>
+  </div>
+
+  
+  <div class="section-label">Records</div>
+  <div class="grid2">
+    <div class="panel">
+      <div class="panel-title"><span class="ptag">👥</span> Customer List</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Name</th><th>Phone</th><th>Area</th><th>Package</th><th></th>
+          </tr></thead>
+          <tbody id="custTable"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="ptag">📋</span> Payment History</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr>
+            <th>#</th><th>Customer</th><th>Amount</th><th>Month</th><th>Date</th><th>Status</th><th></th>
+          </tr></thead>
+          <tbody id="payTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+
+
+<script src="index.js"></script>
+
+
+
+
+
+
+
+</body>
+</html>
